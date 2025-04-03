@@ -25,65 +25,27 @@ def file_organizer(path):
     files = list(os.listdir(path))
 
 
-    for i,file in enumerate(files):
+    for file in files:
         ext_file = Path(file).suffix.lower()
-        # document checker
-        if ext_file in file_categories[dic_keys[0]]:     
-            if not os.path.exists(dic_keys[0]):
-                os.makedirs(dic_keys[0])
-            shutil.move(file,dic_keys[0])
-        # image checker
-        if ext_file in file_categories[dic_keys[1]]:
-            if not os.path.exists(dic_keys[1]):
-                os.makedirs(dic_keys[1])
-            shutil.move(file,dic_keys[1])
-        # video checker
-        if ext_file in file_categories[dic_keys[2]]:
-            if not os.path.exists(dic_keys[2]):
-                os.makedirs(dic_keys[2])
-            shutil.move(file,dic_keys[2])
-        # music checker
-        if ext_file in file_categories[dic_keys[3]]:
-            if not os.path.exists(dic_keys[3]):
-                os.makedirs(dic_keys[3])
-            shutil.move(file,dic_keys[3])
-        # programming checker 
-        if ext_file in file_categories[dic_keys[4]]:
-            if not os.path.exists(dic_keys[4]):
-                os.makedirs(dic_keys[4])
-            shutil.move(file,dic_keys[4])
-        # archive checker
-        if ext_file in file_categories[dic_keys[5]]:
-            if not os.path.exists(dic_keys[5]):
-                os.makedirs(dic_keys[5])
-            shutil.move(file,dic_keys[5])
-        # executable checker
-        if ext_file in file_categories[dic_keys[6]]:
-            if not os.path.exists(dic_keys[6]):
-                os.makedirs(dic_keys[6])
-            shutil.move(file,dic_keys[6])
-        # database checker
-        if ext_file in file_categories[dic_keys[7]]:
-            if not os.path.exists(dic_keys[7]):
-                os.makedirs(dic_keys[7])
-            shutil.move(file,dic_keys[7])
-        # disk image checker
-        if ext_file in file_categories[dic_keys[8]]:
-            if not os.path.exists(dic_keys[8]):
-                os.makedirs(dic_keys[8])
-            shutil.move(file,dic_keys[8])
-        # font checker
-        if ext_file in file_categories[dic_keys[9]]:         
-            if not os.path.exists(dic_keys[9]):
-                os.makedirs(dic_keys[9])
-            shutil.move(file,dic_keys[9])
-        # torrent checker
-        if ext_file in file_categories[dic_keys[10]]:
-            if not os.path.exists(dic_keys[10]):
-                os.makedirs(dic_keys[10])
-            shutil.move(file,dic_keys[10])
+        destion_folder = "others"
+        for category,extension in file_categories.items():
+            if ext_file in extension:
+                destion_folder = category
+                break # stop checking if file found
+        # create folder if not exists    
+        os.makedirs(destion_folder, exist_ok=True) 
 
-    return("Files organized successfully!")
+        # move file to the folder
+        try:
+            shutil.move(file, destion_folder)
+        except PermissionError:
+            print(f"Permission denied: {file}. Skipping...") 
+        except FileNotFoundError:
+            print(f"File not found: {file}. Skipping...")       
+        except Exception as e:
+            print(f"Error moving file {file}: {e}. Skipping...")
+
+    return "Files organized successfully!" 
 
 if __name__ == "__main__":
     file_organizer(path)

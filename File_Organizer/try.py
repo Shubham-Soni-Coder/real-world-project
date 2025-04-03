@@ -13,4 +13,5 @@ file_categories = {
     "Others": []  # For uncategorized files
 }
 
-dic_keys = list(file_categories.keys())
+print(file_categories.keys())
+print(file_categories.items().mapping.keys())
