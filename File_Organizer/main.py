@@ -52,8 +52,6 @@ def create_file_organizer_app():
             messagebox.showwarning("Completed with Errors", f"Files organized with {error_count} errors. Check the log.")
         
 
-
-
     # Use ttk.Button and ttk.Label
     folder_button = ttk.Button(window, text="Select Folder", command=select_folder,style="Custom.TButton")
     folder_button.pack(pady=10)

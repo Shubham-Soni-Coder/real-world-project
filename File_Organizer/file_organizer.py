@@ -32,7 +32,7 @@ def main(path,log_widget=None):
         return
     for file in files:
         ext_file = Path(file).suffix.lower()
-        destination_folder = "others"
+        destination_folder = "Others"  # Default to "Others" if no category matches
         for category,extension in file_categories.items():
             if ext_file in extension:
                 destination_folder = category
