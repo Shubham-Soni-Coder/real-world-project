@@ -12,7 +12,7 @@ def create_file_organizer_app():
     window.title("File Organizer")
     window.geometry(f"{width}x{height}")
     window.resizable(False, False)
-    window.iconbitmap("icon.ico")  # Set the icon for the window
+    window.iconbitmap("assets/icon.ico")  # Set the icon for the window
 
 
     # Apply ttk styles
