@@ -13,7 +13,17 @@ def view_tasks():
         print("No tasks found. Please add a task first.")               
 
 def add_tasks():
-    pass
+    tasks = []
+    while True:
+        task = input("Enter a task (or q for quit): ")
+        if task.lower() == 'q':
+            break
+        done_input = input("Is the task done? (y/n): ")
+        done = True if done_input.lower() == 'y' else False
+        tasks.append({"task": task, "done": done})
+        with open("tasks.json", 'w') as file:
+            json.dump(tasks, file)
+            print("Tasks saved successfully.")                   
 def edit_tasks():
     pass
 def delete_tasks():
@@ -51,4 +61,4 @@ def start():
             print("Invalid choice, please try again.")
 
 if __name__ == "__main__":
-    view_tasks()
+    add_tasks()
