@@ -91,8 +91,35 @@ def edit_tasks():
         tasks = []
 
 
-def marks_taska():
-    pass
+def marks_tasks():
+    print("Mark All Tasks:")
+    while True:
+        print("1. Mark all as DONE")
+        print("2. Mark all as NOT DONE")
+        print("3. Cancel")
+        choice = input("Choose an option:")
+        if choice == '1':
+            # Mark all tasks as done
+            with open("tasks.json",'r') as file:
+                tasks = json.load(file)
+                for task in tasks:
+                    task["done"] = True
+            with open("tasks.json",'w') as file:
+                json.dump(tasks,file,indent=4)
+                print("All tasks marked as done.\n")
+        elif choice == '2':
+            # Mark all tasks as not done
+            with open("tasks.json",'r') as file:
+                tasks = json.load(file)
+                for task in tasks:
+                    task["done"] = False
+            with open("tasks.json",'w') as file:
+                json.dump(tasks,file,indent=4)
+                print("All tasks marked as not done.\n")
+        elif choice == '3':
+            return "Cancelling..."
+        else:
+            print("Invalid choice.\n")
 def delete_tasks():
     pass
 def save_tasks():
@@ -128,4 +155,4 @@ def start():
             print("Invalid choice, please try again.")
 
 if __name__ == "__main__":
-    start()
+    marks_tasks()
