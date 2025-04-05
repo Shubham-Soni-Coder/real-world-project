@@ -7,24 +7,91 @@ def view_tasks():
                 print("Tasks:")
                 for task in tasks:
                     print(f'[✓] {task["task"]}') if task["done"] else print(f'[ ] {task["task"]}')
+
             else:   
                 print("No tasks found.")        
     except FileNotFoundError:
         print("No tasks found. Please add a task first.")               
 
 def add_tasks():
-    tasks = []
+    try:
+        # Load existing tasks from the file
+        with open("tasks.json", 'r') as file:
+            tasks = json.load(file)
+    except FileNotFoundError:
+        tasks = []  # If the file doesn't exist, start with an empty list
+
     while True:
-        task = input("Enter a task (or q for quit): ")
+        task = input("Enter a task (or q to quit): ")
         if task.lower() == 'q':
             break
+
         done_input = input("Is the task done? (y/n): ")
+        if done_input.lower() not in ['y', 'n']:
+            print("Invalid input. Please enter 'y' for yes or 'n' for no.")
+            continue
         done = True if done_input.lower() == 'y' else False
         tasks.append({"task": task, "done": done})
-        with open("tasks.json", 'w') as file:
-            json.dump(tasks, file)
-            print("Tasks saved successfully.")                   
+
+    # Save the updated tasks list back to the file
+    with open("tasks.json", 'w') as file:
+        json.dump(tasks, file, indent=4)
+        print("Tasks saved successfully.")                   
 def edit_tasks():
+    try:
+        # load tasks file
+        with open("tasks.json",'r') as file:
+            tasks = json.load(file)
+            if tasks:
+                if tasks:
+                    print("Tasks:")
+                    for i,task in enumerate(tasks):
+                        print(f'{i+1}. [✓] {task["task"]}') if task["done"] else print(f'{i+1}. [ ] {task["task"]}')
+            else:
+                print("No tasks found.")
+                return
+        # # Get the task number to edit
+        while True:
+            print("what whould you like to do")
+            print("1. Change task name")
+            print("2. Change task status")
+            print("3. Cancal")
+            choice = input("Enter your choice : ")
+            if int(choice) == 3:
+                return "Cancelling..."
+            elif choice.lower() not in ['1', '2']:
+                print("Give choice in number")
+            elif int(choice) == 1:
+                choice = input("Enter your tasks number: ")
+                if choice.isdigit() and 1 <= int(choice) <= len(tasks):
+                    task_number = int(choice) - 1
+                    new_task_name = input("Enter the new task name: ")
+                    tasks[task_number]["task"] = new_task_name
+                    with open("tasks.json",'w') as file:
+                        json.dump(tasks,file,indent=4)
+                        print(f"Task {task_number + 1} updated successfully.")            
+                else: print("Invalid task number.")
+            elif int(choice) == 2:
+                choice = input("Enter your tasks number: ")
+                if choice.isdigit() and 1 <= int(choice) <= len(tasks):
+                    task_number = int(choice) - 1
+                    new_task_name = input("Do you complete task y or n: ")
+                    if new_task_name.lower() == 'y':
+                        tasks[task_number]["done"] = True
+                    elif new_task_name.lower() == 'n':
+                        tasks[task_number]["done"] = False
+                    else:
+                        print("Invalid input. Please enter 'y' or 'n'.")
+                        continue
+                    with open("tasks.json",'w') as file:
+                        json.dump(tasks,file,indent=4)
+                        print(f"Task {task_number + 1} updated successfully.")
+
+    except FileNotFoundError:
+        tasks = []
+
+
+def marks_taska():
     pass
 def delete_tasks():
     pass
@@ -35,7 +102,7 @@ def save_tasks():
 def start():
     print("Welcome to the To-Do List App!")
     while True:
-        print("1. View Tasks")
+        print("\n1. View Tasks")
         print("2. Add Task")
         print("3. Edit Task")
         print("4. Delete Task")
@@ -61,4 +128,4 @@ def start():
             print("Invalid choice, please try again.")
 
 if __name__ == "__main__":
-    add_tasks()
+    start()
