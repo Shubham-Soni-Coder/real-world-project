@@ -17,7 +17,6 @@ file_categories = {
     "Others": []  # For uncategorized files
 }
 dic_keys = list(file_categories.keys())
-path = 'E://' 
 
 def main(path,log_widget=None):
     Path(path).iterdir() # check if path exists
@@ -59,5 +58,6 @@ def main(path,log_widget=None):
     return len(errors)  # Return error count
 
 if __name__ == "__main__":
+    path = 'E://'
     main(path)
     print("Files organized successfully!")
