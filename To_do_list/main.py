@@ -1,26 +1,44 @@
 import json
+
+def update_all_tasks(done_status):
+    with open("tasks.json",'r') as file:
+        tasks = json.load(file)
+        for task in tasks:
+            task["done"] = done_status
+    with open("tasks.json",'w') as file:
+        json.dump(tasks,file,indent=4)    
+
+def load_tasks():
+    try:
+        with open("tasks.json", "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+def save_tasks(tasks):
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file, indent=4)
+
+def display_tasks(tasks,numbered=True):
+    for i,task in enumerate(tasks):
+        prefix = f'{i+1}.' if numbered else ''
+        status = '[✓]' if task['done'] else '[ ]'
+        print(f"{prefix}{status} {task['task']}")
+
 def view_tasks():
     try:
         with open("tasks.json",'r') as file:
             tasks = json.load(file)
             if tasks:
                 print("Tasks:")
-                for task in tasks:
-                    print(f'[✓] {task["task"]}') if task["done"] else print(f'[ ] {task["task"]}')
-
+                display_tasks(tasks,numbered=False)
             else:   
                 print("No tasks found.")        
     except FileNotFoundError:
         print("No tasks found. Please add a task first.")               
 
 def add_tasks():
-    try:
-        # Load existing tasks from the file
-        with open("tasks.json", 'r') as file:
-            tasks = json.load(file)
-    except FileNotFoundError:
-        tasks = []  # If the file doesn't exist, start with an empty list
-
+    tasks = load_tasks()
     while True:
         task = input("Enter a task (or q to quit): ")
         if task.lower() == 'q':
@@ -34,62 +52,51 @@ def add_tasks():
         tasks.append({"task": task, "done": done})
 
     # Save the updated tasks list back to the file
-    with open("tasks.json", 'w') as file:
-        json.dump(tasks, file, indent=4)
-        print("Tasks saved successfully.")                   
+    save_tasks(tasks)
+    print("Tasks saved successfully.")                   
 def edit_tasks():
-    try:
-        # load tasks file
-        with open("tasks.json",'r') as file:
-            tasks = json.load(file)
-            if tasks:
-                if tasks:
-                    print("Tasks:")
-                    for i,task in enumerate(tasks):
-                        print(f'{i+1}. [✓] {task["task"]}') if task["done"] else print(f'{i+1}. [ ] {task["task"]}')
-            else:
-                print("No tasks found.")
-                return
+        tasks = load_tasks()
+        if tasks:
+            print("Tasks:")
+            display_tasks(tasks)
+        else:
+            print("No tasks found.")
+            return
         # # Get the task number to edit
         while True:
             print("what whould you like to do")
             print("1. Change task name")
             print("2. Change task status")
-            print("3. Cancal")
+            print("3. Cancel")
             choice = input("Enter your choice : ")
-            if int(choice) == 3:
-                return "Cancelling..."
+            if choice == '3':
+                print("Cancelling...")
+                return
             elif choice.lower() not in ['1', '2']:
                 print("Give choice in number")
-            elif int(choice) == 1:
+            elif choice == '1':
                 choice = input("Enter your tasks number: ")
                 if choice.isdigit() and 1 <= int(choice) <= len(tasks):
                     task_number = int(choice) - 1
-                    new_task_name = input("Enter the new task name: ")
+                    new_task_name  = input("Enter the new task name: ")
                     tasks[task_number]["task"] = new_task_name
-                    with open("tasks.json",'w') as file:
-                        json.dump(tasks,file,indent=4)
-                        print(f"Task {task_number + 1} updated successfully.")            
+                    save_tasks(tasks)
+                    print(f"Task {task_number + 1} updated successfully.")            
                 else: print("Invalid task number.")
-            elif int(choice) == 2:
+            elif choice == '2':
                 choice = input("Enter your tasks number: ")
                 if choice.isdigit() and 1 <= int(choice) <= len(tasks):
                     task_number = int(choice) - 1
-                    new_task_name = input("Do you complete task y or n: ")
-                    if new_task_name.lower() == 'y':
+                    status_input  = input("Is the task completed? (y/n): ")
+                    if status_input.lower() == 'y':
                         tasks[task_number]["done"] = True
-                    elif new_task_name.lower() == 'n':
+                    elif status_input.lower() == 'n':
                         tasks[task_number]["done"] = False
                     else:
                         print("Invalid input. Please enter 'y' or 'n'.")
                         continue
-                    with open("tasks.json",'w') as file:
-                        json.dump(tasks,file,indent=4)
-                        print(f"Task {task_number + 1} updated successfully.")
-
-    except FileNotFoundError:
-        tasks = []
-
+                    save_tasks(tasks)
+                    print(f"Task {task_number + 1} updated successfully.")
 
 def marks_tasks():
     print("Mark All Tasks:")
@@ -100,65 +107,55 @@ def marks_tasks():
         choice = input("Choose an option:")
         if choice == '1':
             # Mark all tasks as done
-            with open("tasks.json",'r') as file:
-                tasks = json.load(file)
-                for task in tasks:
-                    task["done"] = True
-            with open("tasks.json",'w') as file:
-                json.dump(tasks,file,indent=4)
-                print("All tasks marked as done.\n")
+            update_all_tasks(True)
+            print("All tasks marked as done.\n")
         elif choice == '2':
             # Mark all tasks as not done
-            with open("tasks.json",'r') as file:
-                tasks = json.load(file)
-                for task in tasks:
-                    task["done"] = False
-            with open("tasks.json",'w') as file:
-                json.dump(tasks,file,indent=4)
-                print("All tasks marked as not done.\n")
+            update_all_tasks(False)
+            print("All tasks marked as not done.\n")
         elif choice == '3':
-            return "Cancelling..."
+            print("Cancelling...")
+            return
         else:
             print("Invalid choice.\n")
 def delete_tasks():
     while True:
-        print("Delete Tasks")
+        print("\nDelete Tasks")
         print("1. Delete a specific task")
         print("2. Delete all tasks")
         print("3. Cancel")
         choice = input("Choose an option: ")
-        if int(choice) not in ['1','2','3']:
+        if choice not in ['1','2','3']:
             print("Give choice in number")
-        if int(choice) == 3:
-            return "Cancelling..."
-        elif int(choice) == 1: # delete specific tasks
-            with open("tasks.json",'r') as file:
-                tasks = json.load(file)
-                if tasks:
-                    if tasks:
-                        print("Tasks:")
-                        print("Select the task number to delete:")
-                        for i,task in enumerate(tasks):
-                            print(f'{i+1}. [✓] {task["task"]}') if task["done"] else print(f'{i+1}. [ ] {task["task"]}')    
-                        print("Enter task number to delete: ")
-                        choice = input()
-                        if choice.isdigit() and 1<= int(choice) <=len(tasks):
-                            task_nuber = int(choice) -1
-                            tasks.pop(task_nuber)
-                            with open("tasks.json",'w') as file:
-                                json.dump(tasks,file,indent=4)
-                else:
-                    print("No tasks found.")
-                    return
-        elif int(choice) == 2: # delete all the tasks
+        if choice == '3':
+            print("Cancelling...")
+            return
+        elif choice == '1': # delete specific tasks
+            tasks = load_tasks()
+            if tasks:
+                print("Tasks:")
+                print("Select the task number to delete:")
+                display_tasks(tasks)
+                choice = input("Enter task number to delete: ")
+                if choice.isdigit() and 1<= int(choice) <=len(tasks):
+                    task_number = int(choice) -1
+                    confirm_choice = input("Do you want to delete this task y or n: ")
+                    if confirm_choice.lower() == 'y':
+                        tasks.pop(task_number) 
+                        save_tasks(tasks)
+                        print("Task deleted.")
+                    else:
+                        print("Cancelled.")
+            else:
+                print("No tasks found.")
+                return
+        elif choice == '2': # delete all the tasks
             tasks = []
-            with open("tasks.json",'w') as file:
-                json.dump(tasks,file)
-                
-            
-def save_tasks():
-    pass
+            save_tasks(tasks)
+            print("All tasks deleted.")
+            break
 
+            
 
 def start():
     print("Welcome to the To-Do List App!")
@@ -167,7 +164,7 @@ def start():
         print("2. Add Task")
         print("3. Edit Task")
         print("4. Delete Task")
-        print("5. Save Tasks")
+        print("5. Mark All Tasks")
         print("6. Exit")
 
         choice = input("Enter your choice: ")
@@ -181,9 +178,9 @@ def start():
         elif choice == '4':
             delete_tasks()
         elif choice == '5':
-            save_tasks()
+            marks_tasks()    
         elif choice == '6':
-            print("Exiting the app.")
+            print("Thanks for using the To-Do App. See you again!")
             break
         else:
             print("Invalid choice, please try again.")
