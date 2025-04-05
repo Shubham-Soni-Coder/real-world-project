@@ -121,7 +121,41 @@ def marks_tasks():
         else:
             print("Invalid choice.\n")
 def delete_tasks():
-    pass
+    while True:
+        print("Delete Tasks")
+        print("1. Delete a specific task")
+        print("2. Delete all tasks")
+        print("3. Cancel")
+        choice = input("Choose an option: ")
+        if int(choice) not in ['1','2','3']:
+            print("Give choice in number")
+        if int(choice) == 3:
+            return "Cancelling..."
+        elif int(choice) == 1: # delete specific tasks
+            with open("tasks.json",'r') as file:
+                tasks = json.load(file)
+                if tasks:
+                    if tasks:
+                        print("Tasks:")
+                        print("Select the task number to delete:")
+                        for i,task in enumerate(tasks):
+                            print(f'{i+1}. [✓] {task["task"]}') if task["done"] else print(f'{i+1}. [ ] {task["task"]}')    
+                        print("Enter task number to delete: ")
+                        choice = input()
+                        if choice.isdigit() and 1<= int(choice) <=len(tasks):
+                            task_nuber = int(choice) -1
+                            tasks.pop(task_nuber)
+                            with open("tasks.json",'w') as file:
+                                json.dump(tasks,file,indent=4)
+                else:
+                    print("No tasks found.")
+                    return
+        elif int(choice) == 2: # delete all the tasks
+            tasks = []
+            with open("tasks.json",'w') as file:
+                json.dump(tasks,file)
+                
+            
 def save_tasks():
     pass
 
@@ -155,4 +189,4 @@ def start():
             print("Invalid choice, please try again.")
 
 if __name__ == "__main__":
-    marks_tasks()
+    start()

@@ -1,9 +1,5 @@
 [
     {
-        "task": "call bro",
-        "done": true
-    },
-    {
         "task": "hlo",
         "done": true
     }
