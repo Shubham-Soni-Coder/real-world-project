@@ -1,6 +1,7 @@
 from rembg import new_session,remove
+import PIL 
 import time
-
+import sys
 session = new_session()
 def remove_background(input_image_path,output_image_path):
     
@@ -16,7 +17,15 @@ def remove_background(input_image_path,output_image_path):
 
 if __name__ == "__main__":
     # Input and output image file paths
-    input_path = 'test1.webp'
+    try:
+        input_path = PIL.Image.open('test.jpg')
+    except FileNotFoundError:
+        print(f"Error: Ths specified file was not found.")
+        sys.exit(1)
+    except PIL.UnidentifiedImageError:
+        print("Error: The specified file is not a valid image.")
+        sys.exit(1)
+                    
     output_path = 'test.webp'
     # Remove background
     start = time.time()
