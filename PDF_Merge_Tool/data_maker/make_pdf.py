@@ -1,4 +1,4 @@
-from fpdf import FPDF
+from fpdf import FPDF # type: ignore
 import random
 
 def make_pdf(filename,num_page=1):
