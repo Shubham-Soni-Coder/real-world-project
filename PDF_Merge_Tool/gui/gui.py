@@ -8,6 +8,7 @@ class PDFMergeTool:
         self.width = width
         self.height = height
 
+        # basic tkinter setup
         self.root = root
         self.root.title("PDF Merge Tool")
         self.root.geometry(f"{self.width}x{self.height}")  # Use variables for size
@@ -20,7 +21,7 @@ class PDFMergeTool:
         # Merge PDFs Button (Moved to the top)
         self.merge_button = ttk.Button(root, text="Merge PDFs", command=self.merge_pdfs)
         self.merge_button.pack(pady=10)
-        self.merge_button.configure(style="Merge.TButton")
+        self.merge_button.configure(style="Merge.TButton", cursor="hand2")
 
         # Frame for Buttons
         self.button_frame = ttk.Frame(root, padding=10)
@@ -29,27 +30,27 @@ class PDFMergeTool:
         # Add PDF Files Button
         self.add_button = ttk.Button(self.button_frame, text="Add PDF Files", command=self.add_files)
         self.add_button.grid(row=0, column=0, padx=5, pady=5)
-        self.add_button.configure(style="Accent.TButton")
+        self.add_button.configure(style="Accent.TButton", cursor="hand2")
 
         # Remove Selected File Button
         self.remove_button = ttk.Button(self.button_frame, text="Remove Selected File", command=self.remove_selected)
         self.remove_button.grid(row=0, column=1, padx=5, pady=5)
-        self.remove_button.configure(style="Accent.TButton")
+        self.remove_button.configure(style="Accent.TButton", cursor="hand2")
 
         # Clear All Button
         self.clear_button = ttk.Button(self.button_frame, text="Clear All", command=self.clear_all)
         self.clear_button.grid(row=0, column=2, padx=5, pady=5)
-        self.clear_button.configure(style="Accent.TButton")
+        self.clear_button.configure(style="Accent.TButton", cursor="hand2")
 
         # Move Up Button
         self.move_up_button = ttk.Button(self.button_frame, text="Move Up", command=self.move_up)
         self.move_up_button.grid(row=0, column=3, padx=5, pady=5)
-        self.move_up_button.configure(style="Accent.TButton")
+        self.move_up_button.configure(style="Accent.TButton", cursor="hand2")
 
         # Move Down Button
         self.move_down_button = ttk.Button(self.button_frame, text="Move Down", command=self.move_down)
         self.move_down_button.grid(row=0, column=4, padx=5, pady=5)
-        self.move_down_button.configure(style="Accent.TButton")
+        self.move_down_button.configure(style="Accent.TButton", cursor="hand2")
 
         # Listbox with Scrollbar
         self.listbox_frame = ttk.Frame(root, padding=10)
@@ -65,7 +66,7 @@ class PDFMergeTool:
         self.output_frame.pack(fill=tk.X)
         self.output_button = ttk.Button(self.output_frame, text="Select Output Location", command=self.select_output_location)
         self.output_button.pack(side=tk.LEFT, padx=5)
-        self.output_button.configure(style="Accent.TButton")
+        self.output_button.configure(style="Accent.TButton", cursor="hand2")
         self.output_label = ttk.Label(self.output_frame, text="No output location selected", foreground="blue")
         self.output_label.pack(side=tk.LEFT, padx=5)
 
