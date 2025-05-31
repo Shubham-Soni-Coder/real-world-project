@@ -21,3 +21,7 @@ class TranslatorBackend:
             return translation.text
         except Exception:
             return ""
+
+if __name__=='__main__':
+    result = TranslatorBackend()
+    print(result.translate_text("My name is shubham soni",'Hindi'))
