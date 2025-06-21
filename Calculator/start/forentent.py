@@ -96,6 +96,7 @@ class CalculatorApp:
             # Evaluate the math expression safely
             result = eval(expression, {"__builtins__":None}, {})
             self.display_var.set(str(result))
+            self.histroy_saver(expression,result)
         except Exception:
             self.display_var.set("Error")
 
@@ -132,10 +133,11 @@ class CalculatorApp:
         elif key.lower() == "c":
             self.clear()
 
-    def histroy_saver(self,equation,result):
-        complete_equation = equation+"="+result
-        with open("histroy.txt",'a') as f:
-            f.write(complete_equation+"\n")
+    def histroy_saver(self,expression,result):
+        equation  = f"{expression}={result}"
+        with open("histroy.txt",'a') as file:
+            file.write(equation+"\n")
+
 
 
 
