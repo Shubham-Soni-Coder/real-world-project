@@ -48,7 +48,7 @@ class CalculatorMainMenu:
         exit_button.pack(pady=10, ipadx=40)
 
     def on_start(self):
-        from start.forentent import CalculatorApp
+        from start_button.forentent import CalculatorApp
         self.button_frame.destroy()
         self.title.destroy()
         app = CalculatorApp(self.root,self.width,self.height)
