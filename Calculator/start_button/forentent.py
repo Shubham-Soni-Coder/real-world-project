@@ -137,7 +137,7 @@ class CalculatorApp:
         equation  = f"{expression}={result}"
         with open("histroy.txt",'a') as file:
             file.write(equation+"\n")
-
+            print("Histroy is Saved")
 
 
 

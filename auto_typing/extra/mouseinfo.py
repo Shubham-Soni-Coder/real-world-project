@@ -4,6 +4,9 @@ class clickTracker:
     def __init__(self) -> None:
         self.start_pos = None # store x1,x2 when left click is press
         self.end_pos = None # store x2,y2 when left click id released
+        self.dx = 0
+        self.dy = 0
+
         self.mouse_listener = mouse.Listener(on_click=self.on_click)
         self.keyboard_listener = keyboard.Listener(on_press=self.on_press) #type:ignore
 
@@ -17,9 +20,9 @@ class clickTracker:
             else:
                 self.end_pos = (x, y)
                 print(f"[Released] at x2: {x}, y2: {y}")
-                dx = self.end_pos[0] - self.start_pos[0] #type:ignore
-                dy = self.end_pos[1] - self.start_pos[1] #type:ignore
-                print(f"Mouse moved -> dx: {dx}, dy: {dy}")
+                self.dx = self.end_pos[0] - self.start_pos[0] #type:ignore
+                self.dy = self.end_pos[1] - self.start_pos[1] #type:ignore
+                print(f"Mouse moved -> dx: {self.dx}, dy: {self.dy}")
 
     def on_press(self,key):
         """Handles keyboard press events. Press 'c' to exit the program."""
@@ -43,27 +46,11 @@ class clickTracker:
         self.mouse_listener.stop()
 
 
-    # Add some porpertly to the class
-    @property
-    def x1(self):
-        return self.start_pos[0] if self.start_pos else None
-    
-    @property
-    def y1(self):
-        return self.start_pos[1] if self.start_pos else None
-
-    @property
-    def x2(self):
-        return self.end_pos[0] if self.end_pos else None
-
-    @property
-    def y2(self):
-        return self.end_pos[0] if self.end_pos else None
-
-def main():
-    tracker = clickTracker()
-    tracker.start_listeners()
-
 
 if __name__=="__main__":
+
+    def main():
+        tracker = clickTracker()
+        tracker.start_listeners()
+
     main()
