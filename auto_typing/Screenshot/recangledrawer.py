@@ -2,9 +2,10 @@
 from PIL import ImageTk
 
 class RectangleDrawerBackend:
-    def __init__(self, canvas, image):
+    def __init__(self, canvas, image, on_crop=None):
         self.canvas = canvas
         self.image = image
+        self.on_crop = on_crop  # Callback function for crop event
 
         self.start_x = None
         self.start_y = None
@@ -17,8 +18,6 @@ class RectangleDrawerBackend:
 
         self.croped_image = None
         self.save_path = "D:/coding/python/real-world-project/auto_typing/screenshots/image.jpg"
-    
-
 
         self.load_image()
         self.bind_events()
@@ -52,7 +51,7 @@ class RectangleDrawerBackend:
         self.rect = None
     
     def crop_selected_area(self, save_path=None):
-        """Crop the selected area and save it. Show a message box if saved."""
+        """Crop the selected area and save it. Show a message box if saved. Calls on_crop callback if set."""
         import tkinter.messagebox as messagebox
         if save_path is None:
             save_path = self.save_path
@@ -67,7 +66,9 @@ class RectangleDrawerBackend:
             msg = f"Cropped image saved to {save_path}"
             print(msg)
             messagebox.showinfo("Image Saved", msg)
-            return self.croped_image 
+            if self.on_crop:
+                self.on_crop(self.crop_image)
+            return self.crop_image 
         else:
             print("No rectangle selected to crop.")
             messagebox.showwarning("No Selection", "No rectangle selected to crop.")
