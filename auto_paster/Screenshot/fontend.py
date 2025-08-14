@@ -42,7 +42,7 @@ class FontendApp:
 
         # Pass canvas and image to backend
         self.app = RectangleDrawerBackend(self.canvas, image)
-        self.image_path = self.app.save_path
+        self.image_path = f"{self.app.save_path}/image.jpg"
 
         # Bind Enter key to crop
         self.root.bind("<Return>", lambda event: self.crop_image_saver())
@@ -57,6 +57,8 @@ class FontendApp:
         Returns:
             The cropped PIL Image object.
         """
+        if save_path is None:
+            print("This program use the default image_save_path , if you don't want it plz give the image_path")
         self.last_cropped_image = self.app.crop_selected_area(save_path)
         self.root.destroy()
         return self.last_cropped_image

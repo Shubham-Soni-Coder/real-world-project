@@ -17,7 +17,7 @@ Usage:
 """
 
 from PIL import ImageTk
-
+import os
 class RectangleDrawerBackend:
     """
     Backend for rectangle drawing and cropping on a Tkinter canvas.
@@ -45,7 +45,10 @@ class RectangleDrawerBackend:
         self.all_rectangles = [] # store all the id of the rectangles
 
         self.croped_image = None
-        self.save_path = "D:/coding/python/real-world-project/auto_typing/screenshots/image.jpg"
+        self.save_path = "screenshots"
+
+        if not os.path.exists(self.save_path):  
+            os.mkdir(self.save_path)
 
         self.load_image()
         self.bind_events()
@@ -106,7 +109,7 @@ class RectangleDrawerBackend:
         """
         import tkinter.messagebox as messagebox # for messsage show that crop image is saved
         if save_path is None: # check that any another save_path is not used
-            save_path = self.save_path
+            save_path = f"{self.save_path}/image.jpg"
         if self.last_rect_coords:
             x1, y1, x2, y2 = self.last_rect_coords
             # Ensure proper bounding box
