@@ -2,13 +2,19 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
 class HistoryWindow:
-    def __init__(self, root, history_file="history.txt", width=800, height=600):
-        self.root = tk.Toplevel(root)
+    def __init__(self, root,width,height,history_file="histroy.txt"):
+       
+        self.root = root
+        self.width = width
+        self.height = height
+        self.history_file = history_file
+
+
+
         self.root.title("Calculator History")
-        self.root.geometry(f"{width}x{height}")
+        self.root.geometry(f"{self.width}x{self.height}")
         self.root.configure(bg="#181818")
         self.root.resizable(False, False)
-        self.history_file = history_file
 
         self._setup_styles()
         self._setup_widgets()
@@ -32,11 +38,11 @@ class HistoryWindow:
         
         # Title
         title = ttk.Label(self.root, text="Calculation History", style="HistoryTitle.TLabel")
-        title.pack(pady=(18, 8))
+        title.pack(pady=(6, 6))
 
         # Frame for text and scrollbar
         text_frame = ttk.Frame(self.root, style="History.TFrame")
-        text_frame.pack(padx=18, pady=8, fill="both", expand=True)
+        text_frame.pack(padx=6, pady=1, fill="both", expand=True)
 
         scrollbar = ttk.Scrollbar(text_frame, orient="vertical")
         scrollbar.pack(side="right", fill="y")
@@ -54,7 +60,7 @@ class HistoryWindow:
             highlightthickness=1,
             highlightbackground="#333333"
         )
-        self.text.pack(side="left", fill="both", expand=True)
+        self.text.pack(side="left", fill="both")
         self.text.config(state="disabled")
         scrollbar.config(command=self.text.yview)
 
@@ -115,6 +121,6 @@ class HistoryWindow:
 # Example usage:
 if __name__ == "__main__":
     root = tk.Tk()
-    root.withdraw()  # Hide root window
-    HistoryWindow(root, width=800, height=600)  # You can adjust dimensions here
+    # root.withdraw()  # Hide root window
+    HistoryWindow(root, width=400, height=600)  # You can adjust dimensions here
     root.mainloop()

@@ -1,6 +1,6 @@
 
 """
-main.py
+main_code.py
 
 Automated workflow for taking a screenshot, allowing the user to crop a region,
 performing OCR (Optical Character Recognition) on the cropped image, and copying the recognized text to the clipboard.
@@ -28,6 +28,10 @@ from Screenshot.fontend import FontendApp
 from Screenshot.recangledrawer import RectangleDrawerBackend
 import pytesseract #type:ignore
 import pyperclip
+from plyer import notification
+
+
+
 
 # Update this path based on your system
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -94,6 +98,10 @@ def paster(text):
     """
     pyperclip.copy(text)
     print("The Text is copy to clipboard")
+    notification.notify(
+        title="Copy sucessful",
+        message="Your text is copy sucessful , you can use by 'ctrl+v' shortcut"
+    ) # pyright: ignore[reportOptionalCall]
 
 
 def main():

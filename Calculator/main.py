@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 class CalculatorMainMenu:
-    def __init__(self,root, width = 400 , height = 550):
+    def __init__(self,root, width = 400 , height = 650):
         # Define screen dimensions
         self.width = width
         self.height = height
@@ -51,10 +51,13 @@ class CalculatorMainMenu:
         from start_button.forentent import CalculatorApp
         self.button_frame.destroy()
         self.title.destroy()
-        app = CalculatorApp(self.root,self.width,self.height)
+        CalculatorApp(self.root,self.width,self.height)
 
     def on_history(self):
-        pass
+        from history_button.histroy_window import HistoryWindow
+        self.button_frame.destroy()
+        self.title.destroy()
+        HistoryWindow(self.root,width=self.width,height=self.height)
 
     def on_exit(self):
         self.root.destroy()
